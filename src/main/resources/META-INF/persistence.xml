@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <!--
+    需要配置 persistence-unit节点。
+    这个节点叫做：持久化单元
+        持久化单元：
+            name：持久化单元的名称
+            transaction-type：事务管理的方式
+                JPA：分布式事务管理。
+                RESOURCE_LOCAL：本地事务管理。
+                目前所有的表全部都存在一个数据库当中，我们就使可以用本地事务管理。
+                若不同的表 分散到了不同的数据库当中，就要使用JPA分布式事务管理。
+                //因为数据库的事务控制是在连接上 进行事务控制，若多个连接来在同一个数据库，就可以使用本地事务管理。
+                //若连接是来自多个不同的数据库，他们的事务就不能控制到一起，要是想进行事务控制，就得使用分布式事务控制。
+         -->
+    <persistence-unit name="myJpa" transaction-type="RESOURCE_LOCAL">
+        <!-- 指明JPA的实现产品 -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <!-- 配置数据库 的连接信息
+                用户名：javax.persistence.jdbc.user
+                密码：javax.persistence.jdbc.password
+                驱动：javax.persistence.jdbc.driver
+                数据库url：javax.persistence.jdbc.url
+            -->
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa?characterEncoding=utf-8"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
+
+
+            <!-- 可选配置：JPA的实现产品的配置信息（即：hibernate的配置信息）
+                    打印sql语句到控制台上:   hibernate.show_sql     true | false
+                    自动创建数据库表：       hibernate.hbm2ddl.auto
+                            create：     程序运行时，创建数据库表，（如果有表，先删除 再创建） //用的不多
+                            update：     程序运行时，创建数据库表，（如果有表，不会再创建）
+                            none：       不会创建表  //写了此属性值跟不写效果一样，它要求表必须存在。
+             -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>
+
